@@ -1,4 +1,9 @@
-import { generateGrid, getFlatSection, getSection } from "@/utills/grid";
+import {
+  generateGrid,
+  getActiveCell,
+  getFlatSection,
+  getSection,
+} from "@/utills/grid";
 import { Cell } from "@/utills/models";
 import { createContext, useContext, useMemo, useState } from "react";
 
@@ -16,6 +21,7 @@ export function GridContext({ children }: any) {
       flatSections: Array.from({ length: cells.length }, (_, index) =>
         getFlatSection(cells, index)
       ),
+      activeCell: getActiveCell(cells),
       setCell: (newCell: Cell) =>
         setCells((prevCells) =>
           prevCells.map((rows, i) =>

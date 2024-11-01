@@ -49,3 +49,9 @@ export function getFlatSection(grid: Grid, index: number): Cell[] {
 
   return output;
 }
+
+export function getActiveCell(grid: Grid): Cell | undefined {
+  return grid
+    .find((rows) => rows.find((cell) => cell.isActive))
+    ?.find((cell) => cell.isActive);
+}

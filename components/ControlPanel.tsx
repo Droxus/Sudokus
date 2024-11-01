@@ -1,9 +1,10 @@
 import { Button } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { useGridContext } from "@/providers/GridContext";
+import { Cell } from "@/utills/models";
 
 export function ControlPanel({}) {
-  const { changeActiveCellValue } = useGridContext();
+  const { setCell, activeCell } = useGridContext();
   return (
     <ThemedView
       style={{
@@ -19,7 +20,7 @@ export function ControlPanel({}) {
             key={value}
             title={String(value)}
             onPress={(e) => {
-              changeActiveCellValue?.(value);
+              setCell(new Cell({ ...activeCell, value: value }));
             }}
           />
         ))}

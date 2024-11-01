@@ -24,7 +24,7 @@ export function Cell({ cell }: Props) {
         borderColor: "red",
       }}
       onPress={(e) => {
-        setCell(new models.Cell({ ...cell, isActive: true }));
+        setCell(new models.Cell({ ...cell, isActive: !cell.isActive }));
         console.log(cell);
       }}
     >
