@@ -19,7 +19,9 @@ export function ControlPanel({}) {
           <Button
             key={value}
             title={String(value)}
+            disabled={!activeCell}
             onPress={(e) => {
+              if (!activeCell) return;
               setCell(new Cell({ ...activeCell, value: value }));
             }}
           />

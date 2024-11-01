@@ -18,7 +18,7 @@ export function Cell({ cell }: Props) {
         width: "33.33%",
         textAlign: "center",
         verticalAlign: "middle",
-        backgroundColor: cell.isActive ? "white" : "black",
+        backgroundColor: cell.isActive ? "purple" : "black",
         borderWidth: 1,
         borderStyle: "solid",
         borderColor: "red",
