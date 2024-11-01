@@ -1,13 +1,15 @@
 export type Grid = Cell[][];
 
 export class Cell {
-  value: number;
-  row: number;
-  column: number;
+  readonly value: number;
+  readonly row: number;
+  readonly column: number;
+  readonly isActive: boolean;
 
-  constructor({ value, row, column }: any) {
+  constructor({ value, row, column, isActive = false }: any) {
     this.value = value;
     this.row = row;
     this.column = column;
+    this.isActive = isActive;
   }
 }

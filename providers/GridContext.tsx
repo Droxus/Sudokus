@@ -20,7 +20,9 @@ export function GridContext({ children }: any) {
         setCells((prevCells) =>
           prevCells.map((rows, i) =>
             rows.map((cell, j) =>
-              i === newCell.row && j === newCell.column ? newCell : cell
+              i === newCell.row && j === newCell.column
+                ? newCell
+                : new Cell({ ...cell, isActive: false })
             )
           )
         ),
