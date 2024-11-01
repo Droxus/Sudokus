@@ -3,11 +3,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { useGridContext } from "@/providers/GridContext";
 import { useEffect, useState } from "react";
 
-export function Cell({ value: initvalue, column, row }: any) {
-  const { changeActiveCellValue, setChangeActiveCellValue } = useGridContext();
-
-  const [value, setValue] = useState(initvalue);
-
+export function Cell({ cell }: any) {
   return (
     <ThemedText
       style={{
@@ -22,10 +18,10 @@ export function Cell({ value: initvalue, column, row }: any) {
         borderColor: "red",
       }}
       onPress={(e) => {
-        setChangeActiveCellValue(setValue);
+        console.log(cell);
       }}
     >
-      {value}
+      {cell.value}
     </ThemedText>
   );
 }

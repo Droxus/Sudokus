@@ -1,9 +1,12 @@
 import { Section } from "@/components/Section";
 import { ThemedView } from "@/components/ThemedView";
 import { useGridContext } from "@/providers/GridContext";
-import { useEffect } from "react";
+import { Cell } from "@/utills/models";
+import { useContext, useEffect } from "react";
 
 export function Grid({}) {
+  const { cells, sections, flatSections, setCells } = useGridContext();
+
   return (
     <ThemedView
       style={{
@@ -14,12 +17,8 @@ export function Grid({}) {
         flexDirection: "row",
       }}
     >
-      {new Array(9).fill(9).map((value, index) => (
-        <Section
-          key={index}
-          row={Math.floor(index / 3)}
-          column={index % 3}
-        ></Section>
+      {flatSections.map((flatsection: Cell[], index: number) => (
+        <Section key={index} flatsection={flatsection}></Section>
       ))}
     </ThemedView>
   );

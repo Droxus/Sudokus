@@ -1,7 +1,8 @@
 import { Cell } from "@/components/Cell";
 import { ThemedView } from "@/components/ThemedView";
+import * as models from "@/utills/models";
 
-export function Section({ column, row }: any) {
+export function Section({ flatsection }: any) {
   return (
     <ThemedView
       style={{
@@ -15,13 +16,8 @@ export function Section({ column, row }: any) {
         // borderColor: "green",
       }}
     >
-      {new Array(9).fill(9).map((value, index) => (
-        <Cell
-          key={index}
-          value={value}
-          row={3 * row + Math.floor(index / 3)}
-          column={3 * column + (index % 3)}
-        />
+      {flatsection.map((cell: models.Cell, index: number) => (
+        <Cell key={index} cell={cell} />
       ))}
     </ThemedView>
   );
