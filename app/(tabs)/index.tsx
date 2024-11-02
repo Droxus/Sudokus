@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Platform, Button } from "react-native";
+import { Image, StyleSheet, Platform, Button, Dimensions } from "react-native";
 
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
@@ -31,7 +31,7 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
