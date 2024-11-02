@@ -13,3 +13,13 @@ export class Cell {
     this.isActive = isActive;
   }
 }
+
+export class Section {
+  readonly index: number;
+  readonly cells: Cell[];
+
+  constructor({ index, cells }: any) {
+    this.index = index;
+    this.cells = cells;
+  }
+}

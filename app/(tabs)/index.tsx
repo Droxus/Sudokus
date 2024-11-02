@@ -21,10 +21,6 @@ export default function HomeScreen() {
         width: "100%",
         height: "100%",
         gap: 50,
-        // marginTop: 20,
-        // marginBottom: 20,
-        // marginLeft: "auto",
-        // marginRight: "auto",
       }}
     >
       <GridContext>

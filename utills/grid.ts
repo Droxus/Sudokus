@@ -1,4 +1,4 @@
-import { Cell, Grid } from "./models";
+import { Cell, Grid, Section } from "./models";
 
 export function generateGrid(): Grid {
   const size = 9;
@@ -34,8 +34,8 @@ export function getSection(grid: Grid, index: number): Grid {
   return output;
 }
 
-export function getFlatSection(grid: Grid, index: number): Cell[] {
-  const output: Cell[] = [];
+export function getFlatSection(grid: Grid, index: number): Section {
+  const output: Section = new Section({ index: index, cells: [] });
   const sectionSize = Math.sqrt(grid.length);
 
   const row = Math.floor(index / 3);
@@ -43,7 +43,7 @@ export function getFlatSection(grid: Grid, index: number): Cell[] {
 
   for (let i = row * sectionSize; i < (row + 1) * sectionSize; i++) {
     for (let j = column * sectionSize; j < (column + 1) * sectionSize; j++) {
-      output.push(grid[i][j]);
+      output.cells.push(grid[i][j]);
     }
   }
 

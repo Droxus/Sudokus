@@ -13,15 +13,14 @@ export function Cell({ cell }: Props) {
   return (
     <ThemedText
       style={{
-        padding: 20,
-        fontSize: 32,
-        width: "33.33%",
+        width: 25,
+        height: 25,
         textAlign: "center",
         verticalAlign: "middle",
         backgroundColor: cell.isActive ? "purple" : "black",
         borderWidth: 1,
         borderStyle: "solid",
-        borderColor: "red",
+        borderColor: "green",
       }}
       onPress={(e) => {
         setCell(new models.Cell({ ...cell, isActive: !cell.isActive }));
