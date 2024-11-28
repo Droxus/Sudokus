@@ -31,6 +31,7 @@ export function Cell({ cell }: Props) {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: cell.isActive ? "purple" : "black",
+        color: cell.isValid ? "white" : "red",
         borderWidth: 1,
         borderStyle: "solid",
         borderColor: "green",

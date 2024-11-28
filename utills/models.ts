@@ -5,12 +5,14 @@ export class Cell {
   readonly row: number;
   readonly column: number;
   readonly isActive: boolean;
+  readonly isValid: boolean;
 
-  constructor({ value, row, column, isActive = false }: any) {
+  constructor({ value, row, column, isActive = false, isValid = true }: any) {
     this.value = value;
     this.row = row;
     this.column = column;
     this.isActive = isActive;
+    this.isValid = isValid;
   }
 }
 
