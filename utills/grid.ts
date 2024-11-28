@@ -2,17 +2,20 @@ import { Cell, Grid, Section } from "./models";
 
 export function generateGrid(): Grid {
   const size = 9;
+  const seedRow = Array.from({ length: size }, (_, index) => index + 1);
 
-  return Array.from({ length: size }, (_, row) =>
-    Array.from(
-      { length: size },
-      (_, column) =>
-        new Cell({
-          value: Math.floor(Math.random() * 10),
-          row,
-          column,
-        })
-    )
+  const rows = [];
+  rows[0] = seedRow;
+
+  for (let i = 1; i < size; i++) {
+    const shiftedValue = Math.floor(i / 3) + (i % 3) * (size / 3);
+    rows[i] = seedRow
+      .slice(shiftedValue, size)
+      .concat(seedRow.slice(0, shiftedValue));
+  }
+
+  return rows.map((cells, row) =>
+    cells.map((value, column) => new Cell({ value, row, column }))
   );
 }
 
