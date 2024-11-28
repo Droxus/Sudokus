@@ -19,6 +19,36 @@ export function generateGrid(): Grid {
   );
 }
 
+export function isValidSudoku(grid: Grid) {
+  const board = grid.map((e) => e.map((e) => e.value));
+  const rows: number[][] = [];
+  const columns: number[][] = [];
+  const boxes: number[][] = [];
+
+  board.forEach((row, rowNum) => {
+    rows.push(row);
+    row.forEach((cell, colNum) => {
+      if (!columns[colNum]) {
+        columns[colNum] = [];
+      }
+      columns[colNum].push(cell);
+
+      const boxIndex = Math.floor(rowNum / 3) * 3 + Math.floor(colNum / 3);
+      if (!boxes[boxIndex]) {
+        boxes[boxIndex] = [];
+      }
+      boxes[boxIndex].push(cell);
+    });
+  });
+
+  const squences = [...rows, ...columns, ...boxes];
+  return squences.every((squence) => {
+    const filteredSequence = squence.filter((cell) => !!cell);
+    const uniqueNums = new Set(filteredSequence);
+    return filteredSequence.length === uniqueNums.size;
+  });
+}
+
 export function getSection(grid: Grid, index: number): Grid {
   const output: Grid = [];
   const sectionSize = Math.sqrt(grid.length);
