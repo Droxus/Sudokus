@@ -14,9 +14,20 @@ export function generateGrid(): Grid {
       .concat(seedRow.slice(0, shiftedValue));
   }
 
-  return rows.map((cells, row) =>
+  let grid = rows.map((cells, row) =>
     cells.map((value, column) => new Cell({ value, row, column }))
   );
+  console.debug(grid);
+  return grid
+}
+
+export function isValidCell(grid: Grid, cell: Cell) {
+  const filterNotSelf = (c: Cell) => !(c.row === cell.row && c.column === cell.column)
+  const row = grid[cell.row];
+  const column = grid.map((row) => row[cell.column]);
+  const section = getFlatSection(grid, Math.floor(cell.row / 3) * 3 + Math.floor(cell.column / 3)).cells;
+
+  return [...row, ...column, ...section].filter(filterNotSelf).every(c => c.value !== cell.value);
 }
 
 export function isValidSudoku(grid: Grid) {

@@ -3,6 +3,7 @@ import {
   getActiveCell,
   getFlatSection,
   getSection,
+  isValidCell,
   isValidSudoku,
 } from "@/utills/grid";
 import { Cell } from "@/utills/models";
@@ -25,19 +26,13 @@ export function GridContext({ children }: any) {
       activeCell: getActiveCell(cells),
       setCell: (newCell: Cell) =>
         setCells((prevCells) => {
-          let newCells = prevCells.map((rows, i) =>
+          const newCells = prevCells.map((rows, i) =>
             rows.map((cell, j) =>
               i === newCell.row && j === newCell.column
-                ? newCell
+                ? new Cell({ ...newCell, isValid: cell.value === newCell.value ? cell.isValid : isValidCell(prevCells, newCell)})
                 : new Cell({ ...cell, isActive: false })
             )
           );
-          const isValid = isValidSudoku(newCells);
-          console.log({ isValid });
-          newCells[newCell.row][newCell.column] = new Cell({
-            ...newCells[newCell.row][newCell.column],
-            isValid,
-          });
 
           return newCells;
         }),
