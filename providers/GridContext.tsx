@@ -1,4 +1,5 @@
 import {
+  updateGrid,
   generateGrid,
   getActiveCell,
   getFlatSection,
@@ -24,18 +25,8 @@ export function GridContext({ children }: any) {
         getFlatSection(cells, index)
       ),
       activeCell: getActiveCell(cells),
-      setCell: (newCell: Cell) =>
-        setCells((prevCells) => {
-          const newCells = prevCells.map((rows, i) =>
-            rows.map((cell, j) =>
-              i === newCell.row && j === newCell.column
-                ? new Cell({ ...newCell, isValid: cell.value === newCell.value ? cell.isValid : isValidCell(prevCells, newCell)})
-                : new Cell({ ...cell, isActive: false })
-            )
-          );
-
-          return newCells;
-        }),
+      setCell: (cell: Cell) =>
+        setCells((prevCells) => updateGrid(prevCells, cell)),
     }),
     [cells, setCells]
   );

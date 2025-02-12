@@ -21,6 +21,16 @@ export function generateGrid(): Grid {
   return grid
 }
 
+export function updateGrid(grid: Grid, newCell: Cell): Grid {
+  return grid.map((rows, i) =>
+    rows.map((cell, j) =>
+      i === newCell.row && j === newCell.column
+        ? new Cell({ ...newCell, isValid: cell.value === newCell.value ? cell.isValid : isValidCell(grid, newCell) })
+        : new Cell({ ...cell, isActive: false })
+    )
+  );
+}
+
 export function isValidCell(grid: Grid, cell: Cell) {
   const filterNotSelf = (c: Cell) => !(c.row === cell.row && c.column === cell.column)
   const row = grid[cell.row];
