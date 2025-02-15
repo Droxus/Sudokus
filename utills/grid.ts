@@ -1,23 +1,40 @@
 import { Cell, Grid, Section } from "./models";
 
-export function generateGrid(): Grid {
-  const size = 9;
-  const seedRow = Array.from({ length: size }, (_, index) => index + 1);
+const SIZE = 9;
+
+export function generateSeed(): number[] {
+  const MAX_SHEFFLES = 1e4;
+  const seedRow = Array.from({ length: SIZE }, (_, index) => index + 1);
+
+  const numOfShuffles = Math.ceil(Math.random() * MAX_SHEFFLES);
+  for (let i = 0; i < numOfShuffles; i++) {
+    const firstRandIndex = Math.floor(Math.random() * SIZE);
+    const secondRandIndex = Math.floor(Math.random() * SIZE);
+
+    const temp = seedRow[firstRandIndex];
+    seedRow[firstRandIndex] = seedRow[secondRandIndex];
+    seedRow[secondRandIndex] = temp;
+  }
+
+  return seedRow;
+}
+
+export function generateGrid(seedRow: number[]): Grid {
 
   const rows = [];
   rows[0] = seedRow;
 
-  for (let i = 1; i < size; i++) {
-    const shiftedValue = Math.floor(i / 3) + (i % 3) * (size / 3);
+  for (let i = 1; i < SIZE; i++) {
+    const shiftedValue = Math.floor(i / 3) + (i % 3) * (SIZE / 3);
     rows[i] = seedRow
-      .slice(shiftedValue, size)
+      .slice(shiftedValue, SIZE)
       .concat(seedRow.slice(0, shiftedValue));
   }
 
   let grid = rows.map((cells, row) =>
     cells.map((value, column) => new Cell({ value, row, column }))
   );
-  console.debug(grid);
+
   return grid
 }
 
@@ -40,7 +57,7 @@ export function isValidCell(grid: Grid, cell: Cell) {
   return [...row, ...column, ...section].filter(filterNotSelf).every(c => c.value !== cell.value);
 }
 
-export function isValidSudoku(grid: Grid) {
+export function isValidGrid(grid: Grid) {
   const board = grid.map((e) => e.map((e) => e.value));
   const rows: number[][] = [];
   const columns: number[][] = [];
