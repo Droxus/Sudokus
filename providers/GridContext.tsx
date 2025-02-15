@@ -4,8 +4,8 @@ import {
   getActiveCell,
   getFlatSection,
   getSection,
-  isValidCell,
-  isValidSudoku,
+  generateSeedRow,
+  generateSeedColumn,
 } from "@/utills/grid";
 import { Cell } from "@/utills/models";
 import { createContext, useContext, useMemo, useState } from "react";
@@ -13,7 +13,7 @@ import { createContext, useContext, useMemo, useState } from "react";
 const gridContext = createContext<any>(null);
 
 export function GridContext({ children }: any) {
-  const [cells, setCells] = useState(() => generateGrid());
+  const [cells, setCells] = useState(() => generateGrid(generateSeedRow(), generateSeedColumn()));
 
   const value = useMemo(
     () => ({
