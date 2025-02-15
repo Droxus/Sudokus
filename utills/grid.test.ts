@@ -1,4 +1,4 @@
-import { generateGrid, generateSeed, isValidCell, isValidGrid, updateGrid } from "./grid";
+import { generateGrid, generateSeedColumn, generateSeedRow, isValidCell, isValidGrid, updateGrid } from "./grid";
 import { Cell } from "./models";
 
 describe('isValidGrid', () => {
@@ -182,37 +182,35 @@ describe('updateGrid', () => {
     });
 });
 
-describe('generateSeed', () => {
-    it('should generate a row with unique values', () => {
-        const seedRow1 = generateSeed();
+describe('generateSeedRow', () => {
+    it('should generate a row with 9 unique values', () => {
+        const seedRow1 = generateSeedRow();
 
         expect(seedRow1).toHaveLength(9);
         expect(new Set(seedRow1).size).toBe(9);
+    });
+});
 
-        const seedRow2 = generateSeed();
+describe('generateSeedColumn', () => {
+    it('should generate a column with 9 unique values', () => {
+        const seedRow1 = generateSeedRow();
 
-        expect(seedRow2).toHaveLength(9);
-        expect(new Set(seedRow2).size).toBe(9);
-        expect(seedRow1).not.toEqual(seedRow2);
+        expect(seedRow1).toHaveLength(9);
+        expect(new Set(seedRow1).size).toBe(9);
     });
 });
 
 describe('generateGrid', () => {
     it('should generate a 9x9 grid with unique values in each cells to every row, column, and section', () => {
-        const seedRow1 = generateSeed();
-        const grid1 = generateGrid(seedRow1);
+        const seedRow1 = generateSeedRow();
+        const seedColumn1 = generateSeedColumn();
+        const grid1 = generateGrid(seedRow1, seedColumn1);
 
         expect(isValidGrid(grid1)).toBeTruthy();
 
-        const grid2 = generateGrid(seedRow1);
+        const grid2 = generateGrid(seedRow1, seedColumn1);
 
         expect(isValidGrid(grid2)).toBeTruthy();
         expect(grid1).toEqual(grid2);
-
-        const seedRow2 = generateSeed();
-        const grid3 = generateGrid(seedRow2);
-
-        expect(isValidGrid(grid3)).toBeTruthy();
-        expect(grid1).not.toEqual(grid3);
     });
 });

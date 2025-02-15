@@ -1,15 +1,17 @@
 import { Cell, Grid, Section } from "./models";
 
-const SIZE = 9;
+const GRID_SIZE = 9;
+const SECTION_SIZE = 3;
+const SECTION_COMBINATIONS = ["012", "021", "102", "120", "201", "210"] as const;
 
-export function generateSeed(): number[] {
+export function generateSeedRow(): number[] {
   const MAX_SHEFFLES = 1e4;
-  const seedRow = Array.from({ length: SIZE }, (_, index) => index + 1);
+  const seedRow = Array.from({ length: GRID_SIZE }, (_, index) => index);
 
   const numOfShuffles = Math.ceil(Math.random() * MAX_SHEFFLES);
   for (let i = 0; i < numOfShuffles; i++) {
-    const firstRandIndex = Math.floor(Math.random() * SIZE);
-    const secondRandIndex = Math.floor(Math.random() * SIZE);
+    const firstRandIndex = Math.floor(Math.random() * GRID_SIZE);
+    const secondRandIndex = Math.floor(Math.random() * GRID_SIZE);
 
     const temp = seedRow[firstRandIndex];
     seedRow[firstRandIndex] = seedRow[secondRandIndex];
@@ -19,20 +21,44 @@ export function generateSeed(): number[] {
   return seedRow;
 }
 
-export function generateGrid(seedRow: number[]): Grid {
+export function generateSeedColumn(): number[] {
+  const seedColumn: number[] = []
 
+  for (let col = 0; col < GRID_SIZE; col += SECTION_SIZE) {
+    const randCombIndex = Math.floor(Math.random() * SECTION_COMBINATIONS.length);
+    const randComb = SECTION_COMBINATIONS[randCombIndex]
+    for (let i = 0; i < randComb.length; i++) {
+      seedColumn.push(col + Number(randComb[i]))
+    }
+  }
+
+  return seedColumn;
+}
+
+export function generateGrid(seedRow: number[], seedColumn: number[]): Grid {
   const rows = [];
-  rows[0] = seedRow;
 
-  for (let i = 1; i < SIZE; i++) {
-    const shiftedValue = Math.floor(i / 3) + (i % 3) * (SIZE / 3);
+  for (let i = 0; i < GRID_SIZE; i++) {
+    const shiftedValue = Math.floor(i / SECTION_SIZE) + (i % SECTION_SIZE) * (GRID_SIZE / SECTION_SIZE);
     rows[i] = seedRow
-      .slice(shiftedValue, SIZE)
+      .slice(shiftedValue, GRID_SIZE)
       .concat(seedRow.slice(0, shiftedValue));
   }
 
+  for (let col = 0; col < GRID_SIZE; col += SECTION_SIZE) {
+    for (let row = 0; row < GRID_SIZE; row++) {
+      const prevColumns = [
+        rows[row][col + 0], rows[row][col + 1], rows[row][col + 2]
+      ]
+      for (let i = 0; i < SECTION_SIZE; i++) {
+        rows[row][seedColumn[col + i]] = prevColumns[i];
+      }
+    }
+  }
+
+
   let grid = rows.map((cells, row) =>
-    cells.map((value, column) => new Cell({ value, row, column }))
+    cells.map((value, column) => new Cell({ value: value + 1, row, column }))
   );
 
   return grid
@@ -52,7 +78,7 @@ export function isValidCell(grid: Grid, cell: Cell) {
   const filterNotSelf = (c: Cell) => !(c.row === cell.row && c.column === cell.column)
   const row = grid[cell.row];
   const column = grid.map((row) => row[cell.column]);
-  const section = getFlatSection(grid, Math.floor(cell.row / 3) * 3 + Math.floor(cell.column / 3)).cells;
+  const section = getFlatSection(grid, Math.floor(cell.row / SECTION_SIZE) * SECTION_SIZE + Math.floor(cell.column / SECTION_SIZE)).cells;
 
   return [...row, ...column, ...section].filter(filterNotSelf).every(c => c.value !== cell.value);
 }
@@ -71,7 +97,7 @@ export function isValidGrid(grid: Grid) {
       }
       columns[colNum].push(cell);
 
-      const boxIndex = Math.floor(rowNum / 3) * 3 + Math.floor(colNum / 3);
+      const boxIndex = Math.floor(rowNum / SECTION_SIZE) * SECTION_SIZE + Math.floor(colNum / SECTION_SIZE);
       if (!boxes[boxIndex]) {
         boxes[boxIndex] = [];
       }
@@ -91,8 +117,8 @@ export function getSection(grid: Grid, index: number): Grid {
   const output: Grid = [];
   const sectionSize = Math.sqrt(grid.length);
 
-  const row = Math.floor(index / 3);
-  const column = index % 3;
+  const row = Math.floor(index / SECTION_SIZE);
+  const column = index % SECTION_SIZE;
 
   for (let i = row * sectionSize; i < (row + 1) * sectionSize; i++) {
     const rows: Cell[] = [];
@@ -109,8 +135,8 @@ export function getFlatSection(grid: Grid, index: number): Section {
   const output: Section = new Section({ index: index, cells: [] });
   const sectionSize = Math.sqrt(grid.length);
 
-  const row = Math.floor(index / 3);
-  const column = index % 3;
+  const row = Math.floor(index / SECTION_SIZE);
+  const column = index % SECTION_SIZE;
 
   for (let i = row * sectionSize; i < (row + 1) * sectionSize; i++) {
     for (let j = column * sectionSize; j < (column + 1) * sectionSize; j++) {
